@@ -1,0 +1,84 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+<div>
+
+<h2>Instructions for the Valence-Arousal labeling task </h2>
+
+<p> You are asked to label financial-news sentences along two dimensions: valence (very negative to very positive) and arousal (very mild to very intense). The image below shows an illustration of how you can visualize these dimensions: </p>
+
+    <img src="https://www.researchgate.net/publication/336815371/figure/fig3/AS:829187623514113@1574705143575/The-Valence-and-Arousal-of-the-SAM-a-Valence-and-b-Arousal.png" alt="vaschema" style="width:500px;height:300px;">
+
+    <h3> General advise </h3>
+
+    <ul>
+        <li> valence and arousal are independent dimension. Try to the best of your ability to consider both dimension independently. For instance, a sentence can express very positive or negative sentiment, while being mild (e.g,. consider sentences expressing boredom or serenity).
+        <li> pay attention to the language of the sentence, rather than inferring about the meaning of the content. Do not use any background/contextual information you might be aware of.
+    </ul>
+
+<p> ___________________________________________________________________________________________________________________________________________________________ </p>
+
+    <h3> Labeling valence </h3>
+
+    <h4> Guiding question: </h4>
+
+    <strong> Indicators of high valence (positive/very positive): </strong>
+    <ul>
+        <li> strong emotive language </li>
+        <li> high degree of uncertainy/excitement/surprise/fear </li>
+        <li> use of amplifying words (e.g. extremely, very, extraordinarily, ...) </li>
+        <li> sense of urgency/ immediate action </li>
+    </ul>
+
+    <h5> Example sentence: </h5>
+    <strong>Indicators of low valence (very negative/negative)</strong>
+    <ul>
+        <li> strong emotive language </li>
+        <li> strong emotive language </li>
+        <li> strong emotive language </li>
+        <li> strong emotive language </li>
+    </ul>
+
+    <h5> Example sentence: It has damaged her reputation as a manager because she was chairwoman of the Petrobras board when much of the graft took place.</h5>
+
+
+<p> ___________________________________________________________________________________________________________________________________________________________ </p>
+
+    <h3> Labeling arousal </h3>
+
+    <h4> Guiding question: </h4>
+
+    <strong>Indicators of high arousal (intense/very intense):</strong>
+    <ul>
+        <li> strong emotive language </li>
+        <li> high degree of uncertainy/excitement/surprise/fear </li>
+        <li> use of amplifying words (e.g. extremely, very, extraordinarily, ...) </li>
+        <li> sense of urgency/ immediate action </li>
+    </ul>
+
+    <h5> Example sentence: In response to the growing public criticism, Vale on Tuesday said it had "supported Samarco since the first day" of the disaster and had provided 100 employees, helicopters, fuel and vehicles to the recovery effort.</h5>
+
+    <strong>Indicators of low arousal (very mild/mild)</strong>
+    <ul>
+        <li> Weak language </li>
+        <li> Language indicates caution/stagnation </li>
+        <li> No indication of dynamism/ movement </li>
+    </ul>
+
+    <h5> Example sentence: Schoch said the company took such actions in the first quarter, but noted that they were immaterial and declined to give details. </h5>
+
+<p> ___________________________________________________________________________________________________________________________________________________________ </p>
+
+
+    <h3>Perspective</h3>
+
+    <p> Each sentence is about some entity in the equity markets, which could a company, region or the market itself.
+        Please consider how you perceive the sentiment if you were an investor who already has a stake in the entity.
+        For instance, if a sentence talks about a stock underperforming, view this as negative news and not positive news as a potential buying opportunity. </p>
+
+
+</div>
+
+{% endblock %}

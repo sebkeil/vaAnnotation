@@ -1,0 +1,118 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+
+<style>
+
+    .container {
+        width:50%;
+    }
+
+    .sliderbox {
+        width:50%;
+        display: flex;
+        align-items: center;
+        justify-content:flex-end;
+    }
+
+    .form-range {
+        justify-content:center;
+        display: flex;
+
+    }
+
+
+    #v-div-left {
+        text-align:right;
+        color:blue;
+    }
+
+    #v-div-right {
+        text-align:left;
+        color:blue;
+    }
+
+    #a-div-left {
+        text-align:right;
+        color:green;
+    }
+
+    #a-div-right {
+        text-align:left;
+        color:green;
+    }
+
+    .card {
+        width:15%;
+        justify-content:center;
+    }
+
+</style>
+
+
+
+<form method="post" action="">
+    {% csrf_token %}
+
+    <div class="container-fluid mt-3">
+
+        <p> ______________________________________________________________________________________________________________________________________________________________________</p>
+        <p> ID: {{id}} </p>
+        <h4> {{sentence}}</h4>
+        <p> ______________________________________________________________________________________________________________________________________________________________________</p>
+
+        <p> Annotated: {{total_annotated}}/{{total}} </p>
+
+        <div class="row p-3">
+            <div class="col-sm-5 p-1" id="a-div-left"><span class="font-weight-bold purple-text mr-2 mt-1">Mild</span></div>
+            <div class="col-sm-2 p-1"><input type="range" class="form-range justify-content-center my-4" min="0" max="1" value=0.5 step="0.01" name="arousalSlider" ></div>
+            <div class="col-sm-5 p-1" id="a-div-right"><span class="font-weight-bold purple-text ml-2 mt-1">Intense</span></div>
+        </div>
+
+        <div class="row p-3">
+            <div class="col-sm-5 p-1" id="v-div-left"><span class="font-weight-bold purple-text mr-2 mt-1">Negative</span></div>
+            <div class="col-sm-2 p-1"><input type="range" class="form-range justify-content-center my-4" min="0" max="1" value=0.5 step="0.01" name="valenceSlider" ></div>
+            <div class="col-sm-5 p-1" id="v-div-right"><span class="font-weight-bold purple-text ml-2 mt-1">Positive</span></div>
+        </div>
+
+
+        <div class="card">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="is_miscellaneous">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Miscellaneous</label>
+        </div>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-secondary" name="save">Next!</button>
+
+    </div>
+
+    <!--
+    <div class="container my-4">
+        <div class="d-flex justify-content-center my-4">
+            <span class="font-weight-bold purple-text mr-2 mt-1">Negative</span>
+            <input type="range" class="form-range justify-content-center my-4" min="0" max="1" value=0.5 step="0.01" name="valenceSlider" >
+            <span class="font-weight-bold purple-text ml-2 mt-1">Positive</span>
+
+
+        </div>
+
+
+            <div class="d-flex justify-content-center my-4">
+                <span class="font-weight-bold purple-text mr-2 mt-1">Mild</span>
+                <input type="range" class="form-range justify-content-center my-4" min="0" max="1" value=0.5 step="0.01" name="arousalSlider">
+                <span class="font-weight-bold purple-text ml-2 mt-1">Intense</span>
+            </div>
+
+    </div>
+    -->
+
+
+</form>
+
+
+{% endblock %}

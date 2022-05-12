@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<p class="display-5"> Valence-Arousal Labeling Tool </p>
+<p>_________________________________________________________________________________________________________________________________</p>
+
+<form method="post" action="">
+    {% csrf_token %}
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-dark" type="submit" name="start">Let's go!</button>
+    </div>
+
+
+
+</form>
+
+
+{% endblock %}
