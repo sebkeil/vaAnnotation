@@ -25,7 +25,7 @@ SECRET_KEY = '=8*2njr%65dd43-x+4&n3j83ci7)18yoq70g(@(7v&nowd1t(!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['va-labeling.azurewebsites.net', '127.0.0.1']
+ALLOWED_HOSTS = ['va-annotation.azurewebsites.net', '127.0.0.1']
 
 
 # Application definition
