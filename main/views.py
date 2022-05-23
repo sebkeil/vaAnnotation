@@ -12,14 +12,17 @@ def index(response):
 def annotate_view(response):
     if response.method == "POST":
         # NOTE: implement AL query here to get new id
-        possible_ids = [a.id for a in list(AnnotationBox.objects.filter(is_annotated=False))]
-        new_id = random.choice(possible_ids)
-        return HttpResponseRedirect(f"/annotate/{new_id}")
+        possible_choices = [a for a in list(AnnotationBox.objects.filter(is_drafted=False))]
+        new_choice = random.choice(possible_choices)
+        new_choice.is_drafted = True
+
+        return HttpResponseRedirect(f"/annotate/{new_choice.id}")
 
     return render(response, "main/annotate.html", {})
 
 def sentence_view(response, id):
     annotation_box = AnnotationBox.objects.get(id=id)
+    annotation_box.is_drafted = True
 
     if response.method == "POST":
         annotation_box.valence = response.POST.get("valenceSlider")
@@ -30,7 +33,7 @@ def sentence_view(response, id):
         annotation_box.save()
 
         # NOTE: implement AL query here to get new id
-        possible_ids = [a.id for a in AnnotationBox.objects.filter(is_annotated=False)]
+        possible_ids = [a.id for a in AnnotationBox.objects.filter(is_drafted=False)]
 
         if len(possible_ids):
             new_id = random.choice(possible_ids)
