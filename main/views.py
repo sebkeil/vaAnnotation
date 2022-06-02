@@ -5,7 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import AnnotationBox
 import random
 import numpy as np
-
+import datetime
+from django.utils import timezone
 
 def index(response):
     return render(response, "main/index.html", {})
@@ -14,10 +15,18 @@ def annotate_view(response):
     if response.method == "POST":
 
         # populate possible choices
-        possible_choices = [a for a in list(AnnotationBox.objects.filter(is_drafted=False))]
+        #possible_choices = [a for a in list(AnnotationBox.objects.filter(is_drafted=False))]
         #new_choice = random.choice(possible_choices)
-        new_choice = possible_choices[np.argmin([choice.rank_idx for choice in possible_choices])]
+        #new_choice = possible_choices[np.argmin([choice.rank_idx for choice in possible_choices])]
+        #new_choice.is_drafted = True
+
+        # draft the highest ranked instance that is not annotated and not drafted
+        new_choice = AnnotationBox.objects.filter(is_drafted=False).order_by('rank_idx')[0]
         new_choice.is_drafted = True
+
+        # set the draft (limit) time 2 minutes into the future
+        new_choice.draft_time = timezone.now()
+        new_choice.save()
 
         return HttpResponseRedirect(f"/annotate/{new_choice.id}")
 
@@ -25,28 +34,30 @@ def annotate_view(response):
 
 def sentence_view(response, id):
     annotation_box = AnnotationBox.objects.get(id=id)
-    annotation_box.is_drafted = True
 
     if response.method == "POST":
-        annotation_box.valence = response.POST.get("valenceSlider")
-        annotation_box.arousal = response.POST.get("arousalSlider")
-        is_miscellaneous = response.POST.get("is_miscellaneous")
-        annotation_box.is_miscellaneous = False if is_miscellaneous == None else True
-        annotation_box.is_annotated = True
-        annotation_box.save()
+        if annotation_box.draft_time + timezone.timedelta(minutes=1) > timezone.now():
+            print('time is not over!')
+            annotation_box.valence = response.POST.get("valenceSlider")
+            annotation_box.arousal = response.POST.get("arousalSlider")
+            is_miscellaneous = response.POST.get("is_miscellaneous")
+            annotation_box.is_miscellaneous = False if is_miscellaneous == None else True
+            annotation_box.is_annotated = True
+            annotation_box.save()
 
-        # NOTE: implement AL query here to get new id
-        #possible_ids = [a.id for a in AnnotationBox.objects.filter(is_drafted=False)]
-        possible_choices = [a for a in list(AnnotationBox.objects.filter(is_drafted=False))]
-
-        if len(possible_choices):
-            #new_id = random.choice(possible_ids)
-            new_choice = possible_choices[np.argmin([choice.rank_idx for choice in possible_choices])]
+            new_choice = AnnotationBox.objects.filter(is_drafted=False).order_by('rank_idx')[0]
             new_choice.is_drafted = True
+            new_choice.draft_time = timezone.now() #+ datetime.timedelta(minutes=2)
+            new_choice.save()
             return HttpResponseRedirect(f"/annotate/{new_choice.id}")
 
         else:
-            return HttpResponse(response, "<h1> congrats! You have labeled all the data! </h1>")
+            print('time is over!')
+            annotation_box.draft_time = None
+            annotation_box.is_drafted = False
+            annotation_box.save()
+
+            return HttpResponseRedirect("/timeout")
 
     total_annotated = len(AnnotationBox.objects.filter(is_annotated=True))
     total = len(AnnotationBox.objects.all())
@@ -63,3 +74,7 @@ def sentence_view(response, id):
 def guideline_view(response):
     return render(response, "main/guideline.html", {})
 
+def timeout_view(response):
+    if response.method == "POST":
+        return HttpResponseRedirect("/annotate")
+    return render(response, "main/timeout.html", {})
