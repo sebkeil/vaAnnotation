@@ -17,6 +17,7 @@ class AnnotationBox(models.Model):
     is_annotated = models.BooleanField(default=False)
     is_miscellaneous = models.BooleanField(default=False)
     is_drafted = models.BooleanField(default=False)
+    draft_time = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.sentence
