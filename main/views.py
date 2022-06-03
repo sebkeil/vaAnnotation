@@ -14,12 +14,6 @@ def index(response):
 def annotate_view(response):
     if response.method == "POST":
 
-        # populate possible choices
-        #possible_choices = [a for a in list(AnnotationBox.objects.filter(is_drafted=False))]
-        #new_choice = random.choice(possible_choices)
-        #new_choice = possible_choices[np.argmin([choice.rank_idx for choice in possible_choices])]
-        #new_choice.is_drafted = True
-
         # draft the highest ranked instance that is not annotated and not drafted
         new_choice = AnnotationBox.objects.filter(is_drafted=False).order_by('rank_idx')[0]
         new_choice.is_drafted = True
@@ -35,9 +29,10 @@ def annotate_view(response):
 def sentence_view(response, id):
     annotation_box = AnnotationBox.objects.get(id=id)
 
+    MINUTES = 5         # how many minutes one has to label before sentence becomes invalid
+
     if response.method == "POST":
         if annotation_box.draft_time + timezone.timedelta(minutes=1) > timezone.now():
-            print('time is not over!')
             annotation_box.valence = response.POST.get("valenceSlider")
             annotation_box.arousal = response.POST.get("arousalSlider")
             is_miscellaneous = response.POST.get("is_miscellaneous")
@@ -52,7 +47,6 @@ def sentence_view(response, id):
             return HttpResponseRedirect(f"/annotate/{new_choice.id}")
 
         else:
-            print('time is over!')
             annotation_box.draft_time = None
             annotation_box.is_drafted = False
             annotation_box.save()
