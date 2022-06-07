@@ -32,7 +32,7 @@ def sentence_view(response, id):
     MINUTES = 5         # how many minutes one has to label before sentence becomes invalid
 
     if response.method == "POST":
-        if annotation_box.draft_time + timezone.timedelta(minutes=1) > timezone.now():
+        if annotation_box.draft_time + timezone.timedelta(minutes=MINUTES) > timezone.now():
             annotation_box.valence = response.POST.get("valenceSlider")
             annotation_box.arousal = response.POST.get("arousalSlider")
             is_miscellaneous = response.POST.get("is_miscellaneous")

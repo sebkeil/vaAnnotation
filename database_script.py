@@ -13,7 +13,7 @@ from main.models import AnnotationBox
 import pandas as pd
 import random
 
-sent_df = pd.read_csv('reuters_sample200.csv', index_col=0)
+sent_df = pd.read_csv('reuters_sample800_r2.csv', index_col=0)
 
 random_idxs = random.sample(range(1, len(sent_df)+1), len(sent_df))
 
