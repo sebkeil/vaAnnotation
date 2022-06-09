@@ -14,9 +14,19 @@ def index(response):
 def annotate_view(response):
     if response.method == "POST":
 
-        # draft the highest ranked instance that is not annotated and not drafted
-        new_choice = AnnotationBox.objects.filter(is_drafted=False).order_by('rank_idx')[0]
-        new_choice.is_drafted = True
+        MINUTES = 5
+        # first: check in the pool of 'forgotten' instances if any are left
+        forgotten_instances = AnnotationBox.objects.filter(is_drafted=True).filter(is_annotated=False).filter(draft_time__lte= timezone.now() - timezone.timedelta(minutes=MINUTES)).order_by('rank_idx')
+        print(forgotten_instances)
+
+        if forgotten_instances:
+            new_choice = forgotten_instances[0]
+
+        # if we don't find one, draft a new instance
+        else:
+            # draft the highest ranked instance that is not annotated and not drafted
+            new_choice = AnnotationBox.objects.filter(is_drafted=False).order_by('rank_idx')[0]
+            new_choice.is_drafted = True
 
         # set the draft (limit) time 2 minutes into the future
         new_choice.draft_time = timezone.now()
